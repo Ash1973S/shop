@@ -52,4 +52,8 @@ defmodule ShopWeb.Endpoint do
   plug Plug.Head
   plug Plug.Session, @session_options
   plug ShopWeb.Router
+
+  # custom plugs (middleware)
+  def check_promo_code do
+  end
 end
