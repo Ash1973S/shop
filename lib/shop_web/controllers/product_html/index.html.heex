@@ -1,5 +1,11 @@
-<div class="flex flex-col items-center w-full h-screen mt-20">
-  <h1 class="text-6xl text-sky-500">
-    Products listing page
-  </h1>
-</div>
+<Layouts.app flash={@flash}>
+  <div class="flex flex-col items-center gap-6 w-full h-screen mt-20">
+    <h1 class="text-6xl text-teal-500">
+      Products listing page
+    </h1>
+    <h2 class="text-2xl">
+      Promo code <span :if={@promo} class="text-green-300">available</span>
+      <span :if={!@promo} class="text-red-300">not available</span>
+    </h2>
+  </div>
+</Layouts.app>

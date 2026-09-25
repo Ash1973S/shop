@@ -77,25 +77,43 @@ defmodule ShopWeb do
     end
   end
 
+  # This is a private macro definition in your ShopWeb module
+  # (typically lib/shop_web.ex) that bundles together all the common imports,
+  # aliases, and macros needed by every HTML template or LiveView render function.
   defp html_helpers do
     quote do
-      # Translation
+      # Enables the gettext/1, dgettext/3, and ngettext/4 macros for internationalization
       use Gettext, backend: ShopWeb.Gettext
 
-      # HTML escaping functionality
+      # Brings in core HTML helpers like tag/2, link/2, form_for/3, and most importantly
+      # the safe rendering pipeline that auto-escapes interpolated values to prevent XSS
       import Phoenix.HTML
-      # Core UI components
+
+      # Makes all your shared UI components (<.button>, <.input>, <.flash_group>, etc.)
+      # available directly in templates without needing ShopWeb.CoreComponents.button(...) syntax.
       import ShopWeb.CoreComponents
 
-      # Common modules used in templates
+      # Lets you write JS.push("event"), JS.toggle(), etc. in templates and assigns instead of
+      # the fully qualified Phoenix.LiveView.JS.push(...)
       alias Phoenix.LiveView.JS
+
+      # Shortens references to your layout functions so you can call Layouts.root(...) instead of
+      # ShopWeb.Layouts.root(...).
       alias ShopWeb.Layouts
 
-      # Routes generation with the ~p sigil
+      # Injects the ~p sigil and route helper functions from the verified_routes/0 macro
+      # enabling compile-time-checked paths like ~p"/users/#{@id}".
       unquote(verified_routes())
     end
   end
 
+  @doc """
+  Verified Routes is a Phoenix feature (introduced in v1.7) that turns route helpers
+  into compile-time checked functions.
+
+  Instead of passing string paths like "/pages/about" and hoping they exist,
+  you get named functions that fail to compile if the route doesn't exist.
+  """
   def verified_routes do
     quote do
       use Phoenix.VerifiedRoutes,
